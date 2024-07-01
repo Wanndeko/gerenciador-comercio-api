@@ -9,7 +9,7 @@ class UserController {
       name: yup.string().required(),
       date_of_birth: yup.date().required(),
       email: yup.string().email().required(),
-      password_hash: yup.string().required().min(6),
+      password: yup.string().required().min(6),
       cpf: yup.string().required().min(10),
       address: yup.string().required().min(5),
       admin: yup.boolean()
@@ -21,7 +21,7 @@ class UserController {
       return response.status(400).json({ error: err.errors })
     }
 
-    const { name, date_of_birth, email, password_hash, cpf, address, admin } =
+    const { name, date_of_birth, email, password, cpf, address, admin } =
       request.body
 
     const emailExists = await User.findOne({
@@ -45,7 +45,7 @@ class UserController {
       name,
       date_of_birth,
       email,
-      password_hash,
+      password,
       cpf,
       address,
       admin
