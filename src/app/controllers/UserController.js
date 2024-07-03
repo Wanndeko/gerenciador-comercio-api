@@ -1,18 +1,18 @@
 import User from '../models/User'
 import { v4 } from 'uuid'
 
-import * as yup from 'yup'
+import * as Yup from 'yup'
 
 class UserController {
   async store(request, response) {
-    const schema = yup.object({
-      name: yup.string().required(),
-      date_of_birth: yup.date().required(),
-      email: yup.string().email().required(),
-      password: yup.string().required().min(6),
-      cpf: yup.string().required().min(10),
-      address: yup.string().required().min(5),
-      admin: yup.boolean()
+    const schema = Yup.object({
+      name: Yup.string().required(),
+      date_of_birth: Yup.date().required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().required().min(6),
+      cpf: Yup.string().required().min(10),
+      address: Yup.string().required().min(5),
+      admin: Yup.boolean()
     })
 
     try {
