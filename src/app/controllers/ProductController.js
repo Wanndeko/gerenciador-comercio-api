@@ -45,6 +45,12 @@ class ProductController {
 
     return response.status(201).json(product)
   }
+
+  async index(request, response) {
+    const allProduct = await Product.findAll()
+
+    return response.status(200).json(allProduct)
+  }
 }
 
 export default new ProductController()
