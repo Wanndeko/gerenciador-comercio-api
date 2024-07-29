@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
+import Category from '../models/Category'
 
 class ProductController {
   async store(request, response) {
@@ -8,7 +9,7 @@ class ProductController {
       price: Yup.number().required(),
       quantity: Yup.number().required(),
       expiration_date: Yup.date(),
-      category: Yup.string()
+      category_id: Yup.string()
     })
 
     try {
@@ -17,7 +18,7 @@ class ProductController {
       return response.status(400).json({ error: err.errors })
     }
 
-    const { name, price, quantity, expiration_date, category } = request.body
+    const { name, price, quantity, expiration_date, category_id } = request.body
 
     const productExistis = await Product.findOne({
       where: {
@@ -40,14 +41,22 @@ class ProductController {
       price,
       quantity,
       expiration_date,
-      category
+      category_id
     })
 
     return response.status(201).json(product)
   }
 
   async index(request, response) {
-    const allProduct = await Product.findAll()
+    const allProduct = await Product.findAll({
+      include: [
+        {
+          model: Category,
+          as: 'category',
+          attributes: ['id', 'name']
+        }
+      ]
+    })
 
     return response.status(200).json(allProduct)
   }
