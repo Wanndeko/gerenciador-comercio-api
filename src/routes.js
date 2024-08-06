@@ -20,6 +20,8 @@ routes.post('/session', SessionController.store)
 routes.use(authMiddlewares)
 routes.get('/product', ProductController.index)
 routes.post('/product', ProductController.store)
+routes.put('/product/:id', ProductController.update)
+routes.delete('/product', ProductController.delete)
 
 routes.get('/categories', CategoryController.index)
 routes.post('/categories', CategoryController.store)

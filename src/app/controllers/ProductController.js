@@ -9,7 +9,7 @@ class ProductController {
       price: Yup.number().required(),
       quantity: Yup.number().required(),
       expiration_date: Yup.date(),
-      category_id: Yup.string()
+      category_id: Yup.number()
     })
 
     try {
@@ -59,6 +59,71 @@ class ProductController {
     })
 
     return response.status(200).json(allProduct)
+  }
+
+  async delete(request, response) {
+    const { id } = request.body
+
+    const findThisProduct = await Product.findOne({
+      where: {
+        id
+      }
+    })
+
+    if (!findThisProduct) {
+      return response
+        .status(400)
+        .json({ message: 'This product does not exist' })
+    }
+
+    await Product.destroy({
+      where: {
+        id
+      }
+    })
+
+    return response.status(200).json({ message: 'product deleted' })
+  }
+
+  async update(request, response) {
+    const schema = Yup.object({
+      name: Yup.string(),
+      price: Yup.number(),
+      quantity: Yup.number(),
+      expiration_date: Yup.date(),
+      category_id: Yup.number()
+    })
+
+    const { id } = request.params
+
+    const findProduct = await Product.findByPk(id)
+
+    if (!findProduct) {
+      return response.status(401).json({ message: 'product not exists' })
+    }
+
+    try {
+      schema.validateSync(request.body, { abortEarly: false })
+    } catch (err) {
+      return response.status(400).json({ error: err.errors })
+    }
+
+    const { name, price, quantity, expiration_date, category_id } = request.body
+
+    await Product.update(
+      {
+        name,
+        price,
+        quantity,
+        expiration_date,
+        category_id
+      },
+      {
+        where: { id }
+      }
+    )
+
+    return response.status(200).json({ message: 'product updated' })
   }
 }
 
