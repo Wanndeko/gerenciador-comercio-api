@@ -1,8 +1,7 @@
 import Sequelize from 'sequelize'
+import configDatase from '../config/database'
 
 import User from '../app/models/User'
-
-import configDatase from '../config/database'
 import Product from '../app/models/Product'
 import Category from '../app/models/Category'
 

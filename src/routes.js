@@ -25,5 +25,6 @@ routes.delete('/product', ProductController.delete)
 
 routes.get('/categories', CategoryController.index)
 routes.post('/categories', CategoryController.store)
+routes.patch('/categories/:id', CategoryController.update)
 
 export default routes
