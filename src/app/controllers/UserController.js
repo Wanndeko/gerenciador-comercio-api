@@ -10,6 +10,7 @@ class UserController {
       date_of_birth: Yup.date().required(),
       email: Yup.string().email().required(),
       password: Yup.string().required().min(6),
+      tell: Yup.string().min(7),
       cpf: Yup.string().required().min(10),
       address: Yup.string().required().min(5),
       admin: Yup.boolean()
@@ -21,7 +22,7 @@ class UserController {
       return response.status(400).json({ error: err.errors })
     }
 
-    const { name, date_of_birth, email, password, cpf, address, admin } =
+    const { name, date_of_birth, email, password, tell, cpf, address, admin } =
       request.body
 
     const emailExists = await User.findOne({
@@ -36,7 +37,13 @@ class UserController {
       }
     })
 
-    if (emailExists || cpfExists) {
+    const tellExists = await User.findOne({
+      where: {
+        tell
+      }
+    })
+
+    if (emailExists || cpfExists || tellExists) {
       return response.status(400).json({ error: 'User already exists' })
     }
 
@@ -46,6 +53,7 @@ class UserController {
       date_of_birth,
       email,
       password,
+      tell,
       cpf,
       address,
       admin
